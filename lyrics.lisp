@@ -27,7 +27,7 @@
 (defparameter *raw-websites*
   '((makeitpersonal
      "https://makeitpersonal.co/lyrics?artist=artist-name&title=song-name"
-      #\- nil)
+     #\- nil)
     (genius
      "https://genius.com/artist-name-song-name-lyrics"
      #\- "div.lyrics p")
@@ -138,7 +138,10 @@ not found, return nil."
     lyrics                              ;already in db
     (dolist (website *websites*)
       (let ((lyrics (find-lyrics website artist song)))
-        (when lyrics
+        (when (and lyrics
+                   ;; Some sites (musixmatch) have the entry for the song, but
+                   ;; don't have any lyrics for it, so the result is empty.
+                   (not (= (length lyrics) 0)))
           (return (save-lyrics-to-db
                    artist song
                    ;; lquery:$ returns a vector, but if parsing is not needed,
