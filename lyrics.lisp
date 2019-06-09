@@ -145,7 +145,9 @@ not found, return nil."
                    ;; just a simple string is returned by find-lyrics.
                    (string-downcase     ;all-matches-as-strings doesn't have
                                         ;case-insensitive search
-                    (if (simple-vector-p lyrics)
+                    (if (or (simple-vector-p lyrics)
+                            (and (vectorp lyrics)
+                                 (not (stringp lyrics))))
                         (aref lyrics 0)
                         lyrics)))))))))
 
