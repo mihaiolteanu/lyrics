@@ -1,5 +1,9 @@
 # lyrics
+
 Search song lyrics or, the other way around, search songs from lyrics.
+
+Available as a CL library and as a terminal application.
+
 
 # Installation
 
@@ -17,6 +21,16 @@ git clone https://github.com/mihaiolteanu/lyrics ~/quicklisp/local-projects/lyri
 # A sqlite3 database is used to store the lyrics
 sudo pacman -S sqlite3 
 ```
+
+Optionally, build the terminal app:
+
+```bash
+make build
+```
+
+This produces a `lyrics` binary with the two commands `lyrics` and
+`search-song` available.
+
 
 # Usage
 
@@ -83,6 +97,10 @@ The following lyrics websites are currently supported and searched for lyrics:
 If the song cannot be found on any of the websites, `lyrics` returns nil. Otherwise
 `lyrics` returns the song lyrics and saves them in the database from where they
 will be fetched on the next call. The `lyrics` function is memoized.
+
+The readline application is built quite automatically with the
+[replic](https://github.com/vindarel/replic/) library.
+
 
 ## Authors
 Copyright (c) 2019 [Mihai Olteanu](www.mihaiolteanu.me)

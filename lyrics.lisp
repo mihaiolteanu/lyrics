@@ -1,9 +1,11 @@
 ;;;; lyrics.lisp
 (in-package #:lyrics)
 
+(defparameter *db* nil)
+
 (defun setup-db ()
   "Create a sqlite table in ~/ if one does not already exist."
-  (defparameter *db*
+  (setf *db*
     (connect (merge-pathnames "cl-lyrics.db"
                               (xdg-config-home))))
   (execute-non-query *db*
@@ -17,10 +19,9 @@
                    COLLATE NOCASE,
     lyrics TEXT    COLLATE NOCASE);"))
 
-(setup-db)
 
 (defstruct website
-  ;; website name, only used for documentation purposes 
+  ;; website name, only used for documentation purposes
   (name)
   ;; Template used to construct the actual url. It contains the artist-name and
   ;; song-name string, respectively, which need to be replaced with the user
@@ -160,8 +161,10 @@ name. If the lyrics are not in the db, try and extract them from one of the
 supported lyrics websites. If found, save the lyrics the db and return them. If
 not found, return nil."
   (declare (string artist song))
+  (unless *db*
+    (setup-db))
   (if-let ((lyrics (lyrics-from-db artist song)))
-    lyrics                              ;already in db    
+    lyrics                              ;already in db
     (dolist (website
              ;; Try to minimize the chance of getting banned; try a different
              ;; order of sites on every request.
@@ -196,3 +199,13 @@ the thread that is started for the request."
        ;; at a future date; take your time; better to be safe than being banned
        ;; for making too many requests in a short time.
        (sleep (random-elt '(1 2 3)))))))
+
+(defun main ()
+  (setup-db)
+
+  (setf replic:*prompt* "lyrics> ")
+  (replic.completion:functions-to-commands :replic.base)
+  (replic.completion:functions-to-commands :lyrics)
+  (replic:autoprint-results-from :lyrics)
+
+  (replic:repl))

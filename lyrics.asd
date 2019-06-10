@@ -12,7 +12,13 @@
                :sqlite
                :alexandria
                :bordeaux-threads
-               :defmemo)
+               :defmemo
+               :replic)
   :serial t
+
+  :build-operation "program-op"
+  :build-pathname "lyrics"
+  :entry-point "lyrics::main"
+
   :components ((:file "package")
                (:file "lyrics")))
