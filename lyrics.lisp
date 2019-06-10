@@ -160,8 +160,9 @@ not found, return nil."
                    (if (or (simple-vector-p lyrics)
                            (and (vectorp lyrics)
                                 (not (stringp lyrics))))
-                       (aref lyrics 0)
-                       lyrics))))))))
+                       ;; Escape quotes, otherwise the db insert will fail.
+                       (regex-replace-all "\"" (aref lyrics 0) "\"\"")
+                       (regex-replace-all "\"" lyrics "\"\"")))))))))
 
 ;; (ql:quickload :lyrics)
 ;; (lyrics:lyrics "anathema" "thin air")
