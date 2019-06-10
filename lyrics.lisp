@@ -105,6 +105,15 @@ Maybe other sites host them."
    (format nil "SELECT lyrics FROM lyrics WHERE artist=\"~a\" AND song=\"~a\""
            artist song)))
 
+(defun case-insensitive-regex (regex)
+  "Transform a 'day' string into '[dD][aA][yY]' for a case insensitive search."
+  (reduce (lambda (this remaining)
+            (concatenate 'string this remaining))
+          (loop for c across regex
+                collect (concatenate 'string "["
+                                     (list (char-downcase c))
+                                     (list (char-upcase c)) "]"))))
+
 (defun search-song (lyrics)
   "Return a list of entries, where each entry is a list with the artist name,
 the song name and the verse line where the lyrics appears. The artist name and
@@ -119,7 +128,9 @@ the same artist/song combination."
            ;; matches the input lyrics
            (mappend (lambda (song)
                       (let ((matches (all-matches-as-strings
-                                      (concatenate 'string ".*" lyrics ".*")
+                                      (concatenate 'string ".*"
+                                                   (case-insensitive-regex lyrics)
+                                                   ".*")
                                       (fourth song))))
                         (mapcar (lambda (match)
                                   (list (second song) (third song) match))
@@ -146,14 +157,11 @@ not found, return nil."
                    artist song
                    ;; lquery:$ returns a vector, but if parsing is not needed,
                    ;; just a simple string is returned by find-lyrics.
-                   (string-downcase     ;all-matches-as-strings doesn't have
-                                        ;case-insensitive search
-                    (if (or (simple-vector-p lyrics)
-                            (and (vectorp lyrics)
-                                 (not (stringp lyrics))))
-                        (aref lyrics 0)
-                        lyrics)))))))))
-
+                   (if (or (simple-vector-p lyrics)
+                           (and (vectorp lyrics)
+                                (not (stringp lyrics))))
+                       (aref lyrics 0)
+                       lyrics))))))))
 
 ;; (ql:quickload :lyrics)
 ;; (lyrics:lyrics "anathema" "thin air")
