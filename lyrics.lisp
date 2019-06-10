@@ -176,7 +176,3 @@ not found, return nil."
                        ;; Escape quotes, otherwise the db insert will fail.
                        (regex-replace-all "\"" (aref lyrics 0) "\"\"")
                        (regex-replace-all "\"" lyrics "\"\"")))))))))
-
-;; (ql:quickload :lyrics)
-;; (lyrics:lyrics "anathema" "thin air")
-;; (lyrics:search-song "this dream")
