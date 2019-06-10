@@ -1,10 +1,23 @@
 ;;;; lyrics.lisp
 (in-package #:lyrics)
 
-(defparameter *db*
-  (sqlite:connect
-   (merge-pathnames "cl-lyrics.db"
-                    (user-homedir-pathname))))
+(defun setup-db ()
+  "Create a sqlite table in ~/ if one does not already exist."
+  (defparameter *db*
+    (connect (merge-pathnames "cl-lyrics.db"
+                              (user-homedir-pathname))))
+  (execute-non-query *db*
+   "CREATE TABLE IF NOT EXISTS lyrics (
+    id     INTEGER PRIMARY KEY AUTOINCREMENT
+                   UNIQUE
+                   NOT NULL,
+    artist TEXT    NOT NULL
+                   COLLATE NOCASE,
+    song   TEXT    NOT NULL
+                   COLLATE NOCASE,
+    lyrics TEXT    COLLATE NOCASE);"))
+
+(setup-db)
 
 (defstruct website
   ;; website name, only used for documentation purposes 
