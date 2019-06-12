@@ -6,8 +6,15 @@ Search song lyrics or, the other way around, search songs from lyrics.
 ```bash
 # clone to local-projects for quickload access
 git clone https://github.com/mihaiolteanu/lyrics ~/quicklisp/local-projects/lyrics
+```
 
-# a database is used to store the lyrics
+```common-lisp
+; Register the new project
+(ql:register-local-projects)
+```
+
+```bash
+# A sqlite3 database is used to store the lyrics
 sudo pacman -S sqlite3 
 ```
 
