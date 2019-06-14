@@ -5,7 +5,7 @@
   "Create a sqlite table in ~/ if one does not already exist."
   (defparameter *db*
     (connect (merge-pathnames "cl-lyrics.db"
-                              (user-homedir-pathname))))
+                              (xdg-config-home))))
   (execute-non-query *db*
    "CREATE TABLE IF NOT EXISTS lyrics (
     id     INTEGER PRIMARY KEY AUTOINCREMENT
