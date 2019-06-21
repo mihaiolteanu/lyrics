@@ -5,6 +5,7 @@
   (:import-from :alexandria :if-let)
   (:import-from :alexandria :mappend)
   (:import-from :alexandria :random-elt)
+  (:import-from :alexandria :shuffle)
   (:import-from :cl-ppcre :regex-replace)
   (:import-from :cl-ppcre :regex-replace-all)
   (:import-from :cl-ppcre :all-matches-as-strings)

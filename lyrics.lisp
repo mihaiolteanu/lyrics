@@ -161,8 +161,11 @@ supported lyrics websites. If found, save the lyrics the db and return them. If
 not found, return nil."
   (declare (string artist song))
   (if-let ((lyrics (lyrics-from-db artist song)))
-    lyrics                              ;already in db
-    (dolist (website *websites*)
+    lyrics                              ;already in db    
+    (dolist (website
+             ;; Try to minimize the chance of getting banned; try a different
+             ;; order of sites on every request.
+             (shuffle *websites*))
       (let ((lyrics (find-lyrics website artist song)))
         (when (and lyrics
                    ;; Some sites (musixmatch) have the entry for the song, but
