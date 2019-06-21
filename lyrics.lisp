@@ -94,7 +94,9 @@ Maybe other sites host them."
   (declare (string artist song))
   (multiple-value-bind
         (content response)
-      (http-request (url website artist song))
+      (http-request (url website artist song)
+                    :user-agent (random-elt
+                                 '(:drakma :firefox :explorer :opera :safari)))
     (if (= response 200)
         (let ((query (website-css-selector website)))
           (if query
