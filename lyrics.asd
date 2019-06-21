@@ -11,6 +11,7 @@
                :cl-ppcre
                :sqlite
                :alexandria
+               :bordeaux-threads
                :defmemo)
   :serial t
   :components ((:file "package")

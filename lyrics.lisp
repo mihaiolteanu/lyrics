@@ -181,3 +181,18 @@ not found, return nil."
                        ;; Escape quotes, otherwise the db insert will fail.
                        (regex-replace-all "\"" (aref lyrics 0) "\"\"")
                        (regex-replace-all "\"" lyrics "\"\"")))))))))
+
+(defun request-lyrics (list-of-artists-and-songs)
+  "Start an asynchronous request for lyrics. The argument is a list of
+artist-name and song-name lists. This is a batch request for lyrics. The actual
+lyrics can be later retrieved from the database since this function only returns
+the thread that is started for the request."
+  (make-thread
+   (lambda ()
+     (dolist (artist-song list-of-artists-and-songs)
+       (lyrics (first artist-song)
+               (second artist-song))
+       ;; This is just a request for lyrics, the results of which are to be used
+       ;; at a future date; take your time; better to be safe than being banned
+       ;; for making too many requests in a short time.
+       (sleep (random-elt '(1 2 3)))))))

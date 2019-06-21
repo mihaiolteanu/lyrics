@@ -6,6 +6,7 @@
   (:import-from :alexandria :mappend)
   (:import-from :alexandria :random-elt)
   (:import-from :alexandria :shuffle)
+  (:import-from :bordeaux-threads :make-thread)
   (:import-from :cl-ppcre :regex-replace)
   (:import-from :cl-ppcre :regex-replace-all)
   (:import-from :cl-ppcre :all-matches-as-strings)

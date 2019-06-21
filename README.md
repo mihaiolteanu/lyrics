@@ -50,8 +50,15 @@ input string.
 
     Memoized lyrics search. Search the lyrics for the given artist and song
     name. If the lyrics are not in the db, try and extract them from one of the
-    supported lyrics websites. If found, save the lyrics the db and return them. If
+    supported lyrics websites. If found, save the lyrics in the db and return them. If
     not found, return nil.
+
+**request-lyrics** _list-of-artists-and-songs_
+
+    Start an asynchronous request for lyrics. The argument is a list of
+    artist-name and song-name lists. This is a batch request for lyrics. The actual
+    lyrics can be later retrieved from the database since this function only returns
+    the thread that is started for the request.
     
 **search-song** _lyrics_
 
