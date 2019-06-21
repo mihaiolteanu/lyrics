@@ -86,26 +86,6 @@ template."
     (setf url (regex-replace "song-name" url song))
     url))
 
-(defun find-lyrics (website artist song)
-  "See if this website hosts the lyrics for this artist and song. If yes, then
-use the css selectors to extract the lyrics. If not, return nil, and move along.
-Maybe other sites host them."
-  (declare (website website))
-  (declare (string artist song))
-  (multiple-value-bind
-        (content response)
-      (http-request (url website artist song)
-                    :user-agent (random-elt
-                                 '(:drakma :firefox :explorer :opera :safari)))
-    (if (= response 200)
-        (let ((query (website-css-selector website)))
-          (if query
-              (lquery:$ (inline (parse content)) query (text))
-              ;; Some websites just don't need any parsing.
-              content))
-        ;; Maybe this website doesn't have the lyrics for this song
-        nil)))
-
 (defun save-lyrics-to-db (artist song lyrics)
   "Save the lyrics for future retrieval and return them."
   (execute-non-query
@@ -153,6 +133,26 @@ the same artist/song combination."
                     songs)))
     ;; Don't return identical verse lines for the same artist and song
     (remove-duplicates result :key #'third :test #'equal)))
+
+(defun find-lyrics (website artist song)
+  "See if this website hosts the lyrics for this artist and song. If yes, then
+use the css selectors to extract the lyrics. If not, return nil, and move along.
+Maybe other sites host them."
+  (declare (website website))
+  (declare (string artist song))
+  (multiple-value-bind
+        (content response)
+      (http-request (url website artist song)
+                    :user-agent (random-elt
+                                 '(:drakma :firefox :explorer :opera :safari)))
+    (if (= response 200)
+        (let ((query (website-css-selector website)))
+          (if query
+              (lquery:$ (inline (parse content)) query (text))
+              ;; Some websites just don't need any parsing.
+              content))
+        ;; Maybe this website doesn't have the lyrics for this song
+        nil)))
 
 (defmemo lyrics (artist song)
   "Memoized lyrics search. Search the lyrics for the given artist and song
