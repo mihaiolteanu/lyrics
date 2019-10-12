@@ -1,28 +1,13 @@
 # lyrics
 Search song lyrics or, the other way around, search songs from lyrics.
 
-# Installation
-
-```bash
-# clone to local-projects for quickload access
-git clone https://github.com/mihaiolteanu/lyrics ~/quicklisp/local-projects/lyrics
-```
-
-```common-lisp
-; Register the new project
-(ql:register-local-projects)
-```
-
-```bash
-# A sqlite3 database is used to store the lyrics
-sudo pacman -S sqlite3 
-```
-
-# Usage
+# Install
 
 ```common-lisp
 (ql:quickload :lyrics)
 ```
+
+# Usage
 
 Search the lyrics given an artist and a song name
 ```common-lisp
